@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+:root {
+  /* Sotto — Dark Gallery palette */
+  --bg: #0a0908;
+  --bg-soft: #121110;
+  --card: #15140f;
+  --line: #2a261d;
+  --line-soft: #211e18;
+  --ink: #efeae0;
+  --ink-soft: #a39c8c;
+  --ink-mute: #6e6859;
+  --gold: #b8945c;
+  --gold-soft: #7a6238;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-mute: var(--ink-mute);
+  --color-gold: var(--gold);
+  --font-display: var(--font-display);
+  --font-jp: var(--font-jp);
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-jp), "Noto Serif JP", serif;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.02em;
+}
+
+::selection {
+  background: var(--gold-soft);
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
