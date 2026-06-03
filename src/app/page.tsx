@@ -1,3 +1,4 @@
+import Link from "next/link";
 import WaitlistForm from "./WaitlistForm";
 
 export default function Home() {
@@ -36,21 +37,26 @@ export default function Home() {
           — Quietly, soon. —
         </p>
 
+        {/* hero copy — main message */}
+        <p
+          className="mt-14 font-[family-name:var(--font-display)] text-2xl sm:text-3xl tracking-[0.08em] leading-[1.6]"
+          style={{ color: "var(--ink)", fontWeight: 300 }}
+        >
+          音楽が空間に届く。
+        </p>
+
         {/* concept text */}
         <p
-          className="mt-12 text-[13px] sm:text-sm leading-[2.0] tracking-[0.08em] max-w-md"
+          className="mt-10 text-[13px] sm:text-sm leading-[2.0] tracking-[0.08em] max-w-md"
           style={{ color: "var(--ink-soft)" }}
         >
-          AI音楽クリエイターのための、
+          AIで作った1曲を「作品」として置く場所として。
           <br />
-          招待制の小さなギャラリー。
+          やがてその音楽が
           <br />
+          世界のさまざまな空間へ流れるホームとして。
           <br />
-          数を競わない場所で、
-          <br />
-          1作品の佇まいだけを聴かせるために、
-          <br />
-          間もなく、静かに開きます。
+          クリエイターと場をつなぐ、新しい音楽の届けかた。
         </p>
 
         {/* divider */}
@@ -70,9 +76,18 @@ export default function Home() {
         {/* waitlist form */}
         <WaitlistForm />
 
+        {/* letter link */}
+        <Link
+          href="/letter"
+          className="mt-20 font-[family-name:var(--font-display)] italic text-xs sm:text-sm tracking-[0.2em] uppercase transition-opacity hover:opacity-70"
+          style={{ color: "var(--ink-mute)" }}
+        >
+          — Letter →
+        </Link>
+
         {/* footer */}
         <p
-          className="mt-24 font-[family-name:var(--font-display)] italic text-xs tracking-[0.16em]"
+          className="mt-12 font-[family-name:var(--font-display)] italic text-xs tracking-[0.16em]"
           style={{ color: "var(--ink-mute)" }}
         >
           Sotto · 2026

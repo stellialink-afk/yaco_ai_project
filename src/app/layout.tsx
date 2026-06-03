@@ -16,22 +16,22 @@ const notoSerifJp = Noto_Serif_JP({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sotto.fm"),
+  metadataBase: new URL("https://sottolounge.app"),
   title: "Sotto. — Quietly, soon.",
   description:
-    "AI音楽クリエイターのための、招待制の小さなギャラリー。間もなく、静かに開きます。",
+    "音楽が空間に届く。AIで作った1曲を「作品」として置く場所として。やがてその音楽が世界のさまざまな空間へ流れるホームとして。クリエイターと場をつなぐ、新しい音楽の届けかた。",
   openGraph: {
-    title: "Sotto.",
-    description: "Quietly, soon. — A quiet gallery for AI music creators.",
+    title: "Sotto. — 音楽が空間に届く。",
+    description: "クリエイターと場をつなぐ、新しい音楽の届けかた。",
     type: "website",
     locale: "ja_JP",
-    url: "https://sotto.fm",
+    url: "https://sottolounge.app",
     siteName: "Sotto",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sotto.",
-    description: "Quietly, soon. — A quiet gallery for AI music creators.",
+    title: "Sotto. — 音楽が空間に届く。",
+    description: "クリエイターと場をつなぐ、新しい音楽の届けかた。",
   },
   robots: {
     index: true,
