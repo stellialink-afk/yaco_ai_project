@@ -79,11 +79,9 @@ export default function Letter() {
           <p className="mt-12 text-center">
             Sotto.をきっかけに、
             <br />
-            個性や才能である
+            個性や才能である星と星、場、企業が繋がり、
             <br />
-            星と星、場と場、企業と企業が繋がり、
-            <br />
-            輝いてもらえたら嬉しいです。
+            輝いていただけたら嬉しいです。
           </p>
         </article>
 
