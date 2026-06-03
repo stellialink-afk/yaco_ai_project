@@ -79,10 +79,20 @@ export default function Home() {
         {/* letter link */}
         <Link
           href="/letter"
-          className="mt-20 font-[family-name:var(--font-display)] italic text-xs sm:text-sm tracking-[0.2em] uppercase transition-opacity hover:opacity-70"
-          style={{ color: "var(--ink-mute)" }}
+          className="mt-20 group flex flex-col items-center gap-2 transition-opacity hover:opacity-75"
         >
-          — Letter →
+          <span
+            className="font-[family-name:var(--font-display)] italic text-base sm:text-lg tracking-[0.24em] uppercase"
+            style={{ color: "var(--gold)" }}
+          >
+            — Letter —
+          </span>
+          <span
+            className="text-[11px] sm:text-xs tracking-[0.16em]"
+            style={{ color: "var(--ink-soft)" }}
+          >
+            Sotto.の想いを読む  →
+          </span>
         </Link>
 
         {/* footer */}
