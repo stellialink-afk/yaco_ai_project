@@ -63,13 +63,13 @@ export default function Letter() {
           </p>
 
           <p className="mt-12 text-center">
-            仕事でAIを毎日使う中で、
+            仕事でAIを毎日使う中で
             <br />
-            AI音楽を作るクリエイターたちが、
+            AI音楽を作るクリエイターたちが
             <br />
-            自分の作品をどこに置けばいいか、
+            自分の作品をどこに置けばいいか
             <br />
-            自分の作品をもっと活かしたい、
+            自分の作品をもっと活かしたい
             <br />
             作った先は？
             <br />
@@ -77,9 +77,9 @@ export default function Letter() {
           </p>
 
           <p className="mt-12 text-center">
-            Sotto.をきっかけに、
+            Sotto.をきっかけに
             <br />
-            個性や才能である星と星、場、企業が繋がり、
+            個性や才能である星と星、場、企業が繋がり
             <br />
             輝いていただけたら嬉しいです。
           </p>
