@@ -95,6 +95,15 @@ export default function Home() {
           </span>
         </Link>
 
+        {/* sign in link for creators */}
+        <Link
+          href="/signin"
+          className="mt-14 font-[family-name:var(--font-display)] italic text-[11px] tracking-[0.18em] uppercase transition-opacity hover:opacity-70"
+          style={{ color: "var(--ink-mute)" }}
+        >
+          — Creator sign in →
+        </Link>
+
         {/* footer */}
         <p
           className="mt-12 font-[family-name:var(--font-display)] italic text-xs tracking-[0.16em]"
