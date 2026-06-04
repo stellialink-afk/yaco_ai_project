@@ -1,65 +1,23 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Sotto. — 音楽が空間に届く。";
+export const alt = "Sotto. — Music for spaces.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Load a Google Font dynamically at edge runtime
-async function loadGoogleFont(
-  font: string,
-  text: string,
-  weight = 400,
-  italic = false
-): Promise<ArrayBuffer> {
-  const familyParam = font.replace(/ /g, "+");
-  const axisPart = italic
-    ? `ital,wght@1,${weight}`
-    : `wght@${weight}`;
-  const url = `https://fonts.googleapis.com/css2?family=${familyParam}:${axisPart}&text=${encodeURIComponent(
-    text
-  )}&display=swap`;
-
-  const css = await fetch(url, {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    },
-  }).then((res) => res.text());
-
-  const match = css.match(
-    /src: url\((.+?)\) format\('(opentype|truetype|woff2)'\)/
-  );
-  if (!match) {
-    throw new Error(`Could not parse font URL for ${font}`);
-  }
-
-  const fontResponse = await fetch(match[1]);
-  if (!fontResponse.ok) {
-    throw new Error(`Failed to fetch font file for ${font}`);
-  }
-  return fontResponse.arrayBuffer();
-}
-
+// Minimal OGP — uses Satori's default font (Inter) so this is guaranteed
+// to render regardless of external font availability.
+// Japanese text is intentionally omitted here because the default font
+// has no JP glyphs. Branded typography (Cormorant + Noto Serif JP) can
+// be layered on later once font hosting is sorted.
 export default async function Image() {
-  // Subset the fonts to only the characters we use (faster, smaller)
-  const cormorantText = "Sotto.TheLoungeProject ";
-  const cormorantItalicText = "—Quietlysoon.";
-  const notoText = "音楽が空間に届く。";
-
-  const [cormorantRegular, cormorantItalic, notoSerifJp] = await Promise.all([
-    loadGoogleFont("Cormorant Garamond", cormorantText, 300, false),
-    loadGoogleFont("Cormorant Garamond", cormorantItalicText, 300, true),
-    loadGoogleFont("Noto Serif JP", notoText, 400, false),
-  ]);
-
   return new ImageResponse(
     (
       <div
         style={{
           background: "#0a0908",
           backgroundImage:
-            "radial-gradient(circle at 50% 38%, rgba(184,148,92,0.12) 0%, transparent 65%)",
+            "radial-gradient(circle at 50% 38%, rgba(184,148,92,0.14) 0%, transparent 65%)",
           width: "100%",
           height: "100%",
           display: "flex",
@@ -67,11 +25,10 @@ export default async function Image() {
           alignItems: "center",
           justifyContent: "center",
           padding: 80,
-          fontFamily: "Cormorant",
           position: "relative",
         }}
       >
-        {/* Subtle gold accent line top */}
+        {/* top accent line */}
         <div
           style={{
             position: "absolute",
@@ -84,13 +41,13 @@ export default async function Image() {
           }}
         />
 
-        {/* Brand mark "Sotto." */}
+        {/* brand mark */}
         <div
           style={{
             display: "flex",
             fontSize: 200,
-            fontWeight: 300,
             color: "#efeae0",
+            fontWeight: 300,
             letterSpacing: "0.04em",
             lineHeight: 1,
           }}
@@ -101,29 +58,27 @@ export default async function Image() {
               color: "#b8945c",
               fontStyle: "italic",
               marginLeft: 4,
-              fontFamily: "Cormorant",
             }}
           >
             .
           </span>
         </div>
 
-        {/* Tagline italic */}
+        {/* tagline */}
         <div
           style={{
             display: "flex",
-            fontSize: 36,
+            fontSize: 38,
             fontStyle: "italic",
             color: "#a39c8c",
             letterSpacing: "0.28em",
             marginTop: 36,
-            fontFamily: "Cormorant",
           }}
         >
           — Quietly, soon. —
         </div>
 
-        {/* Divider */}
+        {/* divider */}
         <div
           style={{
             width: 60,
@@ -133,11 +88,10 @@ export default async function Image() {
           }}
         />
 
-        {/* Japanese concept */}
+        {/* concept (English fallback) */}
         <div
           style={{
             display: "flex",
-            fontFamily: "NotoSerifJP",
             fontSize: 52,
             color: "#efeae0",
             letterSpacing: "0.12em",
@@ -145,10 +99,10 @@ export default async function Image() {
             fontWeight: 400,
           }}
         >
-          音楽が空間に届く。
+          Music for spaces.
         </div>
 
-        {/* Footer — The Sotto Lounge Project */}
+        {/* footer */}
         <div
           style={{
             display: "flex",
@@ -157,13 +111,12 @@ export default async function Image() {
             color: "#8a6a2e",
             letterSpacing: "0.28em",
             marginTop: 72,
-            fontFamily: "Cormorant",
           }}
         >
           The Sotto Lounge Project
         </div>
 
-        {/* Subtle gold accent line bottom */}
+        {/* bottom accent line */}
         <div
           style={{
             position: "absolute",
@@ -177,28 +130,6 @@ export default async function Image() {
         />
       </div>
     ),
-    {
-      ...size,
-      fonts: [
-        {
-          name: "Cormorant",
-          data: cormorantRegular,
-          weight: 300,
-          style: "normal",
-        },
-        {
-          name: "Cormorant",
-          data: cormorantItalic,
-          weight: 300,
-          style: "italic",
-        },
-        {
-          name: "NotoSerifJP",
-          data: notoSerifJp,
-          weight: 400,
-          style: "normal",
-        },
-      ],
-    }
+    { ...size }
   );
 }
