@@ -47,8 +47,8 @@ export default function SigninForm() {
   async function verifyCode(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const trimmedCode = code.trim();
-    if (!trimmedCode || trimmedCode.length !== 6) {
-      setErrorMessage("6桁の数字を入力してください。");
+    if (!trimmedCode || trimmedCode.length < 6) {
+      setErrorMessage("メールに記載された認証コードを入力してください。");
       return;
     }
 
@@ -95,21 +95,21 @@ export default function SigninForm() {
           <span style={{ color: "var(--gold)" }}>{email}</span>{" "}
           宛に
           <br />
-          6桁の認証コードを送信しました。
+          認証コードを送信しました。
         </p>
 
         <input
           type="text"
           inputMode="numeric"
           pattern="[0-9]*"
-          maxLength={6}
+          maxLength={10}
           required
           value={code}
           onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
-          placeholder="000000"
+          placeholder="00000000"
           disabled={status === "verifying"}
           autoFocus
-          className="w-full bg-transparent border-0 border-b text-center py-3 px-1 outline-none transition-colors tracking-[0.5em] text-2xl"
+          className="w-full bg-transparent border-0 border-b text-center py-3 px-1 outline-none transition-colors tracking-[0.35em] text-2xl"
           style={{
             borderBottomColor: "var(--line)",
             color: "var(--ink)",
@@ -119,7 +119,7 @@ export default function SigninForm() {
 
         <button
           type="submit"
-          disabled={status === "verifying" || code.length !== 6}
+          disabled={status === "verifying" || code.length < 6}
           className="mt-3 px-8 py-3 border font-[family-name:var(--font-display)] italic text-xs sm:text-sm tracking-[0.24em] uppercase transition-opacity disabled:opacity-50 hover:opacity-80"
           style={{
             borderColor: "var(--gold)",

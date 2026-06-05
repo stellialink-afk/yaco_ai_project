@@ -59,7 +59,7 @@ export default async function SigninPage({
         >
           メールアドレスを入力すると、
           <br />
-          6桁の認証コードが届きます。
+          認証コードが届きます。
           <br />
           パスワード不要でログインできます。
         </p>
