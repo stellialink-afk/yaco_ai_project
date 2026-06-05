@@ -61,20 +61,62 @@ export default function Home() {
 
         {/* divider */}
         <div
-          className="mt-16 mb-12 h-[1px] w-24"
+          className="mt-16 mb-14 h-[1px] w-24"
           style={{ background: "var(--line)" }}
         />
 
-        {/* waitlist label */}
-        <p
-          className="font-[family-name:var(--font-display)] italic text-xs sm:text-sm tracking-[0.2em] uppercase mb-6"
-          style={{ color: "var(--ink-mute)" }}
-        >
-          — Join the waitlist —
-        </p>
+        {/* ───── For Creators ───── */}
+        <section className="flex flex-col items-center w-full">
+          <p
+            className="font-[family-name:var(--font-display)] italic text-xs sm:text-sm tracking-[0.28em] uppercase"
+            style={{ color: "var(--ink-mute)" }}
+          >
+            — For Creators —
+          </p>
+          <p
+            className="mt-4 text-[13px] sm:text-sm leading-[1.9] tracking-[0.06em]"
+            style={{ color: "var(--ink-soft)" }}
+          >
+            あなたの1曲を、世界の空間へ。
+          </p>
+          <Link
+            href="/signin"
+            className="mt-6 px-8 py-3 border font-[family-name:var(--font-display)] italic text-xs sm:text-sm tracking-[0.24em] uppercase transition-opacity hover:opacity-80"
+            style={{
+              borderColor: "var(--gold)",
+              color: "var(--gold)",
+            }}
+          >
+            — Sign in to share —
+          </Link>
+        </section>
 
-        {/* waitlist form */}
-        <WaitlistForm />
+        {/* in-between divider */}
+        <div
+          className="mt-16 mb-14 h-[1px] w-16"
+          style={{ background: "var(--line-soft)" }}
+        />
+
+        {/* ───── For Listeners ───── */}
+        <section className="flex flex-col items-center w-full">
+          <p
+            className="font-[family-name:var(--font-display)] italic text-xs sm:text-sm tracking-[0.28em] uppercase"
+            style={{ color: "var(--ink-mute)" }}
+          >
+            — For Listeners —
+          </p>
+          <p
+            className="mt-4 text-[13px] sm:text-sm leading-[1.9] tracking-[0.06em]"
+            style={{ color: "var(--ink-soft)" }}
+          >
+            視聴は登録不要、間もなく公開。
+            <br />
+            新着のお知らせを受け取る。
+          </p>
+          <div className="mt-6 w-full max-w-sm">
+            <WaitlistForm />
+          </div>
+        </section>
 
         {/* letter link */}
         <Link
@@ -95,18 +137,9 @@ export default function Home() {
           </span>
         </Link>
 
-        {/* sign in link for creators */}
-        <Link
-          href="/signin"
-          className="mt-14 font-[family-name:var(--font-display)] italic text-[11px] tracking-[0.18em] uppercase transition-opacity hover:opacity-70"
-          style={{ color: "var(--ink-mute)" }}
-        >
-          — Creator sign in →
-        </Link>
-
         {/* footer */}
         <p
-          className="mt-12 font-[family-name:var(--font-display)] italic text-xs tracking-[0.16em]"
+          className="mt-16 font-[family-name:var(--font-display)] italic text-xs tracking-[0.16em]"
           style={{ color: "var(--ink-mute)" }}
         >
           Sotto · 2026

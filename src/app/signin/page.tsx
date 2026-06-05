@@ -57,9 +57,9 @@ export default async function SigninPage({
           className="mt-10 text-[13px] sm:text-sm leading-[2.0] tracking-[0.08em] max-w-md"
           style={{ color: "var(--ink-soft)" }}
         >
-          メールアドレスを入力してください。
+          メールアドレスを入力すると、
           <br />
-          確認メールのリンクをクリックすれば、
+          6桁の認証コードが届きます。
           <br />
           パスワード不要でログインできます。
         </p>

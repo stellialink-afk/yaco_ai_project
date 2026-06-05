@@ -1,16 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function SigninForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<
-    "idle" | "sending" | "sent" | "error"
-  >("idle");
+  const [code, setCode] = useState("");
+  const [step, setStep] = useState<"email" | "code">("email");
+  const [status, setStatus] = useState<"idle" | "sending" | "verifying">(
+    "idle"
+  );
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function sendCode(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const trimmed = email.trim();
     if (!trimmed) return;
@@ -22,54 +26,131 @@ export default function SigninForm() {
     const { error } = await supabase.auth.signInWithOtp({
       email: trimmed,
       options: {
+        shouldCreateUser: true,
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
 
     if (error) {
-      setStatus("error");
+      setStatus("idle");
       setErrorMessage(
         error.message.includes("rate")
           ? "少し時間をおいてから再度お試しください。"
           : "送信に失敗しました。もう一度お試しください。"
       );
     } else {
-      setStatus("sent");
+      setStatus("idle");
+      setStep("code");
     }
   }
 
-  if (status === "sent") {
+  async function verifyCode(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const trimmedCode = code.trim();
+    if (!trimmedCode || trimmedCode.length !== 6) {
+      setErrorMessage("6桁の数字を入力してください。");
+      return;
+    }
+
+    setStatus("verifying");
+    setErrorMessage("");
+
+    const supabase = createClient();
+    const { error } = await supabase.auth.verifyOtp({
+      email: email.trim(),
+      token: trimmedCode,
+      type: "email",
+    });
+
+    if (error) {
+      setStatus("idle");
+      setErrorMessage(
+        error.message.includes("expired")
+          ? "認証コードの有効期限が切れました。もう一度コードを送信してください。"
+          : "認証コードが正しくありません。もう一度確認してください。"
+      );
+    } else {
+      router.refresh();
+      router.push("/");
+    }
+  }
+
+  function goBackToEmail() {
+    setStep("email");
+    setCode("");
+    setErrorMessage("");
+  }
+
+  // ───── Step 2: Enter the 6-digit code from email ─────
+  if (step === "code") {
     return (
-      <div className="flex flex-col items-center text-center max-w-sm">
+      <form
+        onSubmit={verifyCode}
+        className="flex flex-col items-center w-full max-w-sm gap-3"
+      >
         <p
-          className="font-[family-name:var(--font-display)] italic text-base sm:text-lg tracking-[0.12em] mb-4"
-          style={{ color: "var(--gold)" }}
-        >
-          — メールを送りました —
-        </p>
-        <p
-          className="text-[13px] leading-[2.0] tracking-[0.06em]"
+          className="text-[13px] leading-[1.8] tracking-[0.06em] text-center mb-4"
           style={{ color: "var(--ink-soft)" }}
         >
-          受信ボックスを確認してください。
+          <span style={{ color: "var(--gold)" }}>{email}</span>{" "}
+          宛に
           <br />
-          メールに記載されたリンクをクリックすると、
-          <br />
-          Sotto.にログインできます。
+          6桁の認証コードを送信しました。
         </p>
-        <p
-          className="mt-8 text-[11px] tracking-[0.1em]"
+
+        <input
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          maxLength={6}
+          required
+          value={code}
+          onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+          placeholder="000000"
+          disabled={status === "verifying"}
+          autoFocus
+          className="w-full bg-transparent border-0 border-b text-center py-3 px-1 outline-none transition-colors tracking-[0.5em] text-2xl"
+          style={{
+            borderBottomColor: "var(--line)",
+            color: "var(--ink)",
+            fontVariantNumeric: "tabular-nums",
+          }}
+        />
+
+        <button
+          type="submit"
+          disabled={status === "verifying" || code.length !== 6}
+          className="mt-3 px-8 py-3 border font-[family-name:var(--font-display)] italic text-xs sm:text-sm tracking-[0.24em] uppercase transition-opacity disabled:opacity-50 hover:opacity-80"
+          style={{
+            borderColor: "var(--gold)",
+            color: "var(--gold)",
+          }}
+        >
+          {status === "verifying" ? "Verifying…" : "— Verify code —"}
+        </button>
+
+        {errorMessage && (
+          <p className="text-xs mt-2" style={{ color: "#c87575" }}>
+            {errorMessage}
+          </p>
+        )}
+
+        <button
+          type="button"
+          onClick={goBackToEmail}
+          className="mt-6 font-[family-name:var(--font-display)] italic text-[11px] tracking-[0.16em] uppercase opacity-60 hover:opacity-100 transition-opacity"
           style={{ color: "var(--ink-mute)" }}
         >
-          メールが届かない場合は、迷惑メールフォルダもご確認ください。
-        </p>
-      </div>
+          ← 別のメールで再送信
+        </button>
+      </form>
     );
   }
 
+  // ───── Step 1: Enter email ─────
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={sendCode}
       className="flex flex-col items-center w-full max-w-sm gap-3"
     >
       <input
@@ -94,9 +175,9 @@ export default function SigninForm() {
           color: "var(--gold)",
         }}
       >
-        {status === "sending" ? "Sending…" : "— Send magic link —"}
+        {status === "sending" ? "Sending…" : "— Send code —"}
       </button>
-      {status === "error" && (
+      {errorMessage && (
         <p className="text-xs mt-2" style={{ color: "#c87575" }}>
           {errorMessage}
         </p>
