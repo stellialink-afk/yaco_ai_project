@@ -90,6 +90,14 @@ export default async function WorkDetailPage({
     if (!user) redirect("/signin");
   }
 
+  // fetch artist profile
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("display_name")
+    .eq("user_id", work.user_id)
+    .single<{ display_name: string }>();
+  const artistName = profile?.display_name?.trim() || "Unknown artist";
+
   const audioSrc = signed?.signedUrl ?? "";
   const dateLabel = formatDate(work.published_at ?? work.created_at);
 
@@ -151,6 +159,14 @@ export default async function WorkDetailPage({
         >
           {work.title}
         </h1>
+
+        {/* artist name */}
+        <p
+          className="mt-3 font-[family-name:var(--font-display)] italic text-sm sm:text-base tracking-[0.16em]"
+          style={{ color: "var(--gold)" }}
+        >
+          by {artistName}
+        </p>
 
         {/* concept */}
         {work.concept && (

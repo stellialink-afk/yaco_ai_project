@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { generateDefaultCover } from "@/lib/generateDefaultCover";
 
 // ───── allowed file types (Storage RLS と合わせる) ─────
 const AUDIO_TYPES = ["audio/mpeg", "audio/wav", "audio/mp4", "audio/x-m4a"];
@@ -118,10 +119,6 @@ export default function PostForm({ userId }: { userId: string }) {
       setErrorMessage("音源ファイルを選択してください。");
       return;
     }
-    if (!coverFile) {
-      setErrorMessage("ジャケット画像を選択してください。");
-      return;
-    }
 
     setErrorMessage("");
     setStatus("uploading");
@@ -129,6 +126,13 @@ export default function PostForm({ userId }: { userId: string }) {
     const supabase = createClient();
 
     try {
+      // ───── 0. if no cover, generate a default one ─────
+      let effectiveCover = coverFile;
+      if (!effectiveCover) {
+        setProgress("デフォルトのジャケットを生成しています…");
+        effectiveCover = await generateDefaultCover(title.trim() || "Untitled");
+      }
+
       // ───── 1. upload audio ─────
       setProgress("音源をアップロードしています…");
       const audioPath = makeFilename("audio", audioFile);
@@ -142,11 +146,11 @@ export default function PostForm({ userId }: { userId: string }) {
 
       // ───── 2. upload cover ─────
       setProgress("ジャケットをアップロードしています…");
-      const coverPath = makeFilename("cover", coverFile);
+      const coverPath = makeFilename("cover", effectiveCover);
       const { error: coverErr } = await supabase.storage
         .from("covers")
-        .upload(coverPath, coverFile, {
-          contentType: coverFile.type,
+        .upload(coverPath, effectiveCover, {
+          contentType: effectiveCover.type,
           upsert: false,
         });
       if (coverErr) {
@@ -281,8 +285,7 @@ export default function PostForm({ userId }: { userId: string }) {
       {/* ───── Cover image ───── */}
       <Field
         label="Cover image"
-        required
-        hint="JPEG / PNG / WebP、最大 5MB、正方形を推奨"
+        hint="JPEG / PNG / WebP、最大 5MB、正方形推奨（未指定なら自動生成）"
       >
         <input
           ref={coverInputRef}

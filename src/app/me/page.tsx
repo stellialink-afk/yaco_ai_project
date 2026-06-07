@@ -18,6 +18,11 @@ type WorkSummary = {
   created_at: string;
 };
 
+type Profile = {
+  display_name: string;
+  bio: string | null;
+};
+
 export default async function MePage() {
   const supabase = await createClient();
   const {
@@ -26,14 +31,24 @@ export default async function MePage() {
 
   if (!user) redirect("/signin");
 
-  const { data: works } = await supabase
-    .from("works")
-    .select("id, title, concept, cover_url, visibility, created_at")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false })
-    .returns<WorkSummary[]>();
+  const [worksRes, profileRes] = await Promise.all([
+    supabase
+      .from("works")
+      .select("id, title, concept, cover_url, visibility, created_at")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .returns<WorkSummary[]>(),
+    supabase
+      .from("profiles")
+      .select("display_name, bio")
+      .eq("user_id", user.id)
+      .single<Profile>(),
+  ]);
 
-  const list = works ?? [];
+  const list = worksRes.data ?? [];
+  const profile = profileRes.data;
+  const fallbackName = user.email?.split("@")[0] ?? "";
+  const displayName = profile?.display_name?.trim() || fallbackName;
 
   return (
     <main className="relative min-h-screen flex flex-col items-center px-6 py-16 overflow-hidden">
@@ -70,12 +85,34 @@ export default async function MePage() {
           — My works —
         </p>
 
+        {/* artist name */}
         <p
-          className="mt-3 text-[12px] tracking-[0.06em]"
+          className="mt-4 font-[family-name:var(--font-display)] text-xl sm:text-2xl tracking-[0.04em]"
+          style={{ color: "var(--ink)", fontWeight: 300 }}
+        >
+          {displayName}
+        </p>
+        {profile?.bio && (
+          <p
+            className="mt-3 text-[12px] tracking-[0.06em] leading-[1.8] max-w-md"
+            style={{ color: "var(--ink-soft)" }}
+          >
+            {profile.bio}
+          </p>
+        )}
+        <p
+          className="mt-2 text-[11px] tracking-[0.06em]"
           style={{ color: "var(--ink-mute)" }}
         >
           {user.email}
         </p>
+        <Link
+          href="/me/edit"
+          className="mt-3 font-[family-name:var(--font-display)] italic text-[11px] tracking-[0.2em] uppercase transition-opacity hover:opacity-70"
+          style={{ color: "var(--ink-mute)" }}
+        >
+          Edit profile  →
+        </Link>
 
         {/* new post button */}
         <Link

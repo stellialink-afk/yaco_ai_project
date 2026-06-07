@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Noto_Serif_JP } from "next/font/google";
 import "./globals.css";
+import SiteHeader from "./SiteHeader";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-display",
@@ -55,7 +56,10 @@ export default function RootLayout({
       lang="ja"
       className={`${cormorant.variable} ${notoSerifJp.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <SiteHeader />
+        {children}
+      </body>
     </html>
   );
 }
