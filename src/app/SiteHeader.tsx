@@ -2,8 +2,8 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
 /**
- * Subtle top-right navigation, only shown when signed in.
- * Designed to stay out of the way of the landing hero.
+ * Top navigation. Only renders when the user is signed in.
+ * Goal: clearly visible without overpowering the dark gallery aesthetic.
  */
 export default async function SiteHeader() {
   const supabase = await createClient();
@@ -14,14 +14,22 @@ export default async function SiteHeader() {
   if (!user) return null;
 
   return (
-    <nav
-      className="fixed top-0 right-0 z-50 px-5 py-4 flex items-center gap-5"
-      aria-label="Site navigation"
+    <header
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md"
+      style={{
+        background: "rgba(10, 9, 8, 0.72)",
+        borderBottom: "1px solid var(--line)",
+      }}
     >
-      <HeaderLink href="/post/new">Place</HeaderLink>
-      <Divider />
-      <HeaderLink href="/me">My works</HeaderLink>
-    </nav>
+      <nav
+        className="flex items-center justify-end max-w-6xl mx-auto px-6 py-3 gap-5 sm:gap-8"
+        aria-label="Site navigation"
+      >
+        <HeaderLink href="/post/new">投稿する</HeaderLink>
+        <Divider />
+        <HeaderLink href="/me">マイページ</HeaderLink>
+      </nav>
+    </header>
   );
 }
 
@@ -35,8 +43,8 @@ function HeaderLink({
   return (
     <Link
       href={href}
-      className="font-[family-name:var(--font-display)] italic text-[10px] sm:text-[11px] tracking-[0.2em] uppercase transition-opacity hover:opacity-100 opacity-60"
-      style={{ color: "var(--ink-soft)" }}
+      className="font-[family-name:var(--font-jp)] text-[13px] sm:text-sm tracking-[0.12em] transition-opacity hover:opacity-70"
+      style={{ color: "var(--gold)", fontWeight: 400 }}
     >
       {children}
     </Link>
