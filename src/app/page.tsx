@@ -1,7 +1,14 @@
 import Link from "next/link";
 import WaitlistForm from "./WaitlistForm";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const signedIn = !!user;
+
   return (
     <main className="relative flex flex-1 flex-col items-center justify-center min-h-screen px-6 py-16 overflow-hidden">
       {/* subtle gradient background */}
@@ -79,16 +86,38 @@ export default function Home() {
           >
             あなたの1曲を、世界の空間へ。
           </p>
-          <Link
-            href="/signin"
-            className="mt-6 px-8 py-3 border font-[family-name:var(--font-display)] italic text-xs sm:text-sm tracking-[0.24em] uppercase transition-opacity hover:opacity-80"
-            style={{
-              borderColor: "var(--gold)",
-              color: "var(--gold)",
-            }}
-          >
-            — Sign in to share —
-          </Link>
+          {signedIn ? (
+            <div className="mt-6 flex flex-col items-center gap-3">
+              <Link
+                href="/post/new"
+                className="px-8 py-3 border font-[family-name:var(--font-display)] italic text-xs sm:text-sm tracking-[0.24em] uppercase transition-opacity hover:opacity-80"
+                style={{
+                  borderColor: "var(--gold)",
+                  color: "var(--gold)",
+                }}
+              >
+                — Place a new work —
+              </Link>
+              <Link
+                href="/me"
+                className="font-[family-name:var(--font-display)] italic text-[11px] tracking-[0.2em] uppercase transition-opacity hover:opacity-70"
+                style={{ color: "var(--ink-mute)" }}
+              >
+                My works  →
+              </Link>
+            </div>
+          ) : (
+            <Link
+              href="/signin"
+              className="mt-6 px-8 py-3 border font-[family-name:var(--font-display)] italic text-xs sm:text-sm tracking-[0.24em] uppercase transition-opacity hover:opacity-80"
+              style={{
+                borderColor: "var(--gold)",
+                color: "var(--gold)",
+              }}
+            >
+              — Sign in to share —
+            </Link>
+          )}
         </section>
 
         {/* in-between divider */}
