@@ -80,7 +80,7 @@ export default async function NewPostPage() {
           className="mt-20 font-[family-name:var(--font-display)] italic text-xs tracking-[0.2em] uppercase transition-opacity hover:opacity-70"
           style={{ color: "var(--ink-mute)" }}
         >
-          ← Back to my works
+          ← Back to my gallery
         </Link>
       </div>
     </main>

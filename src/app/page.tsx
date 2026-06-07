@@ -103,7 +103,7 @@ export default async function Home() {
                 className="font-[family-name:var(--font-display)] italic text-[11px] tracking-[0.2em] uppercase transition-opacity hover:opacity-70"
                 style={{ color: "var(--ink-mute)" }}
               >
-                My works  →
+                My Gallery  →
               </Link>
             </div>
           ) : (

@@ -25,9 +25,9 @@ export default async function SiteHeader() {
         className="flex items-center justify-end max-w-6xl mx-auto px-6 py-3 gap-5 sm:gap-8"
         aria-label="Site navigation"
       >
-        <HeaderLink href="/post/new">投稿する</HeaderLink>
+        <HeaderLink href="/post/new">作品を置く</HeaderLink>
         <Divider />
-        <HeaderLink href="/me">マイページ</HeaderLink>
+        <HeaderLink href="/me">My Gallery</HeaderLink>
       </nav>
     </header>
   );

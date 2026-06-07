@@ -301,7 +301,7 @@ export default async function WorkDetailPage({
               className="font-[family-name:var(--font-display)] italic text-xs tracking-[0.2em] uppercase transition-opacity hover:opacity-70"
               style={{ color: "var(--gold)" }}
             >
-              — My works —
+              — My Gallery —
             </Link>
           )}
           <Link

@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import SignOutButton from "./SignOutButton";
 
 export const metadata: Metadata = {
-  title: "My works — Sotto.",
+  title: "My Gallery — Sotto.",
   description: "あなたの作品一覧",
 };
 
@@ -82,7 +82,7 @@ export default async function MePage() {
           className="mt-8 font-[family-name:var(--font-display)] italic text-xs sm:text-sm tracking-[0.28em] uppercase"
           style={{ color: "var(--ink-mute)" }}
         >
-          — My works —
+          — My Gallery —
         </p>
 
         {/* artist name */}
