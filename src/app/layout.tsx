@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Sotto. — Quietly, soon.",
   description:
-    "音楽が空間に届く。AIで作った1曲を「作品」として置く場所として。やがてその音楽が世界のさまざまな空間へ流れるホームとして。クリエイターと場をつなぐ、新しい音楽の届けかた。",
+    "音楽が空間に届く。AIで作った1曲を「作品」として置く場所として。やがてその音楽がさまざまな空間へ流れるホームとして。クリエイターと場をつなぐ、新しい音楽の届けかた。",
   openGraph: {
     title: "Sotto. — 音楽が空間に届く。",
     description: "クリエイターと場をつなぐ、新しい音楽の届けかた。",
