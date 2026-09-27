@@ -11,7 +11,7 @@ create extension if not exists pgcrypto;
 
 -- ───────────────────────── 共通: updated_at 自動更新 ─────────────────────────
 create or replace function public.set_updated_at()
-returns trigger language plpgsql as $$
+returns trigger language plpgsql set search_path = public as $$
 begin
   new.updated_at = now();
   return new;
@@ -254,3 +254,11 @@ from public.events e
 left join public.leads l on l.id = e.lead_id
 group by 1
 order by page_views desc;
+
+-- ビューは呼び出し側の権限で評価し、ブラウザ用ロールからは見えなくする（管理画面は service role で参照）
+alter view public.v_funnel_by_source set (security_invoker = on);
+revoke all on public.v_funnel_by_source from anon, authenticated;
+
+-- トリガー専用関数を REST 経由で呼べないようにする（トリガーからの実行には影響しない）
+revoke execute on function public.handle_new_user() from public, anon, authenticated;
+revoke execute on function public.set_updated_at() from public, anon, authenticated;

@@ -20,6 +20,9 @@ Sotto（`../src`）とは別プロジェクト。Sotto と同じスタック（N
 
 ### 1. Supabase（Sotto とは別に新規プロジェクト）
 
+本番プロジェクト `stellia-academy`（ref: `fmhtroizdqsavgzqlkyh`、Tokyo）は作成済みで、
+`0001_init.sql` と `seed.sql` は 2026-09-27 に適用済み。別環境を作るときだけ以下を実行する。
+
 1. https://supabase.com でプロジェクト作成（リージョンは Tokyo）
 2. SQL Editor で `supabase/migrations/0001_init.sql` を実行
 3. 続けて `supabase/seed.sql` を実行（講座と8レッスンの下書きが入る）
